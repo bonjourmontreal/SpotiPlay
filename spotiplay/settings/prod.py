@@ -6,7 +6,7 @@ import dj_database_url
 DEBUG = False
 # Disable debug mode to prevent detailed error pages from showing in production.
 
-ALLOWED_HOSTS = ['spotiplay-temp-2.onrender.com']
+ALLOWED_HOSTS = ['spotiplay.onrender.com']
 # Restrict allowed hosts to your actual domain for security.
 
 DATABASES = {
