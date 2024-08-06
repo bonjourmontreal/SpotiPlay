@@ -1,0 +1,39 @@
+<!-- templates/results.html -->
+{% extends 'quiz/base.html' %}
+
+{% load static %}
+
+{% block title %}SpotiPlay - Results{% endblock %}
+{% block data_page %}results{% endblock %}
+
+{% block content %}
+    <div class="intro-section">
+        <h1 class="highlight">Game Over!</h1>
+        <div>
+            <p class="subtitle">Your final score is: </p>
+            <span class="big-number" id="final-score">{{ score }}</span>
+        </div>
+    </div>
+
+    <div class="card-group">
+        <a class="card card-button" id="play-again-button" data-welcome-url="{% url 'welcome' %}">
+            <div class="card-content">
+                <i class="fas fa-play"></i> Play Again
+            </div>
+        </a>
+        <a class="card card-button" href="{% url 'leaderboard' %}">
+            <div class="card-content">
+                <i class="fas fa-trophy"></i> Leaderboard
+            </div>
+        </a>
+        <a class="card card-button" href="{% url 'profile' %}">
+            <div class="card-content">
+                <i class="fas fa-user"></i> Profile
+            </div>
+        </a>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script type="module" src="{% static 'quiz/js/quiz/results.js' %}"></script>
+{% endblock %}

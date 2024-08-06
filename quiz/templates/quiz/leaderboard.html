@@ -1,0 +1,32 @@
+<!-- templates/leaderboard.html -->
+{% extends 'quiz/base.html' %}
+
+{% load static %}
+
+{% block title %}Leaderboard{% endblock %}
+{% block data_page %}leaderboard{% endblock %}
+
+{% block content %}
+    <div class="intro-section">
+        <h1 class="highlight">Leaderboard</h1>
+        <div class="dropdown">
+            <button class="btn-dropdown btn-dropdown-leaderboard">
+                Top Scores
+                <span class="dropdown-button-logo">&#x25BC;</span>
+            </button>
+            <div class="dropdown-content dropdown-content-leaderboard">
+                <a href="#total-scores">Total Scores</a>
+                <a href="#top-scores">Top Scores</a>
+            </div>
+        </div>     
+    </div>
+
+    <div id="leaderboard-container">
+        <ul id="leaderboard"></ul>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script type="module" src="{% static 'quiz/js/quiz/leaderboard.js' %}"></script>
+{% endblock %}

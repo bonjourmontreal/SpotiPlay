@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SpotiPlay{% endblock %}</title>
+    {% load static %}
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'quiz/css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    {% block extra_css %}{% endblock %}
+    <meta name="csrf-token" content="{{ csrf_token }}">
+</head>
+<body data-page="{% block data_page %}{% endblock %}">
+    <div class="page-container">
+        <div class="header-container">
+            <div class="header-left">
+                <a href="{% url 'welcome' %}" id="logo-link">
+                    <img src="{% static 'quiz/images/SpotiPlay_Logo.png' %}" alt="SpotiPlay Logo" id="spotiplay-logo">
+                </a>
+            </div>
+            {% if request.session.access_token %}
+            <div class="header-right">
+                <a href="{% url 'welcome' %}" class="home-button">
+                    <i class="fas fa-home"></i>
+                </a>
+                <div class="dropdown">
+                    <button class="btn-dropdown">
+                        <span class="dropdown-button-display-name">{{ request.session.display_name }}</span>
+                        <span class="dropdown-button-logo">&#x25BC;</span>
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="{% url 'profile' %}">Profile</a>
+                        <a href="{% url 'logout' %}">Log out</a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        <div class="main-content-container">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+    {% block base_js %}
+        <script type="module" src="{% static 'quiz/js/main.js' %}"></script>
+    {% endblock %}
+    {% block extra_js %}
+    {% endblock %}
+</body>
+</html>

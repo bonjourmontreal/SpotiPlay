@@ -1,0 +1,81 @@
+{% extends 'quiz/base.html' %}
+
+{% load static %}
+
+{% block title %}SpotiPlay Quiz{% endblock %}
+{% block data_page %}quiz{% endblock %}
+
+{% block content %}
+    <div id="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+    <div id="quiz-container" style="display: none;">
+        <div id="quiz-display-container">
+            <div id="quiz-header">
+                <div id="question-number" class="slot">Q1</div>
+                <div id="global-timer" class="circle-timer">
+                    <svg height="60" width="60">
+                        <circle cx="30" cy="30" r="25" stroke="white" stroke-width="6" fill="none" />
+                        <circle id="global-circle" cx="30" cy="30" r="25" stroke="#1DB954" stroke-width="6" fill="none" />
+                        <text id="global-time" x="50%" y="50%" text-anchor="middle" fill="white" dy=".3em"></text>
+                    </svg>
+                </div>
+                <div id="score-container" class="slot">
+                    <span id="score">0</span>
+                    <span id="points-notification" style="display:none;"></span>
+                </div>
+            </div>
+            <div id="wave" class="wave-container">
+                <img class="wave-visualizer" src="{% static 'quiz/images/soundwave-white.svg' %}" alt="Wave Visualization">
+            </div>
+            <div id="controls">
+                <button class="btn-primary" id="next-button" disabled>Next</button>
+                <button class="btn-primary" id="play-button">Play</button>
+                <button class="btn-primary btn-stop" id="stop-button" disabled>Stop</button>
+            </div>
+            <div id="question-timer" class="progress-bar">
+                <div id="question-timer-bar" class="progress-bar-fill"></div>
+            </div>
+        </div>
+
+        <!-- Quiz Content Container -->
+        <div class="quiz-content-container">
+            <!-- Multiple Choice Container -->
+            <div id="choices" class="choices-container">
+                <div class="choice disabled">
+                    <strong class="track-name">...</strong>
+                    <span class="artist-name">...</span>
+                </div>
+                <div class="choice disabled">
+                    <strong class="track-name">...</strong>
+                    <span class="artist-name">...</span>
+                </div>
+                <div class="choice disabled">
+                    <strong class="track-name">...</strong>
+                    <span class="artist-name">...</span>
+                </div>
+                <div class="choice disabled">
+                    <strong class="track-name">...</strong>
+                    <span class="artist-name">...</span>
+                </div>
+            </div>
+            <!-- Text Input and Suggestions Container -->
+            <div class="text-input-container">
+                <input type="text" id="text-input" placeholder="Search track or artist..." class="text-input" autocomplete="off">
+                <div id="suggestions" class="suggestions-container"></div>
+                <div id="correct-answer" class="correct-answer"></div>
+                <button class="btn-primary" id="submit-button">Submit</button>
+            </div>
+        </div>
+    </div>
+    <audio id="audio-element"></audio>
+{% endblock %}
+
+{% block extra_js %}
+    <script type="module" src="{% static 'quiz/js/quiz/utils.js' %}"></script>
+    <script type="module" src="{% static 'quiz/js/quiz/ui.js' %}"></script>
+    <script type="module" src="{% static 'quiz/js/quiz/timer.js' %}"></script>
+    <script type="module" src="{% static 'quiz/js/quiz/answerHandling.js' %}"></script>
+    <script type="module" src="{% static 'quiz/js/quiz/questionHandling.js' %}"></script>
+    <script type="module" src="{% static 'quiz/js/quiz/index.js' %}"></script>
+{% endblock %}

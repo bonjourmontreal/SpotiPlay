@@ -1,0 +1,35 @@
+<!-- templates/profile.html -->
+{% extends 'quiz/base.html' %}
+
+{% block title %}Profile - SpotiPlay{% endblock %}
+{% block data_page %}profile{% endblock %}
+
+{% block content %}
+    <div class="intro-section">
+        <h1 class="highlight">{{ display_name }}</h1>
+        <p class="spotify-id" href="https://open.spotify.com/user/{{ spotify_user_id }}">
+            open.spotify.com/user/{{ spotify_user_id }}
+        </p> 
+    </div>
+
+    <div class="card-group">
+        <div class="card">
+            <div class="card-content">
+                <h5 class="card-title">Highest Score</h5>
+                <p class="card-text big-number">{{ highest_score }}</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <h5 class="card-title">Total Score</h5>
+                <p class="card-text big-number">{{ total_score }}</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <h5 class="card-title">Times Played</h5>
+                <p class="card-text big-number">{{ times_played }}</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

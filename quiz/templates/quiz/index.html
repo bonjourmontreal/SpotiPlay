@@ -1,0 +1,17 @@
+<!-- templates/index.html -->
+{% extends 'quiz/base.html' %}
+
+{% block title %}SpotiPlay - Welcome{% endblock %}
+{% block data_page %}index{% endblock %}
+
+{% block content %}
+    <div class="intro-section">
+        <h1>Welcome to <span class="highlight">SpotiPlay</span></h1>
+        <p class="subtitle">Test your knowledge of your favorite songs with our Spotify quiz!</p>
+    </div>
+    <div>
+        <button class="btn-primary">
+            <a href="{% url 'spotify_auth' %}">Login with Spotify</a>
+        </button>
+    </div>
+{% endblock %}
