@@ -20,7 +20,7 @@ class SpotifyAuth:
     @staticmethod
     def get_redirect_uri():
         """Return the redirect URI."""
-        return 'https://spotiplay-temp-2.onrender.com' + reverse('spotify_callback')
+        return 'https://spotiplay.onrender.com' + reverse('spotify_callback')
     
         # Spotify Redirect URI: http://localhost:8000/spotify/callback
         # return 'http://localhost:8000' + reverse('spotify_callback')
