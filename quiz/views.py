@@ -6,6 +6,7 @@ from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from decouple import config
 from django.utils.crypto import get_random_string
 from django.core.cache import cache
 from .models import Leaderboard
@@ -19,19 +20,18 @@ class SpotifyAuth:
     
     @staticmethod
     def get_redirect_uri():
-        """Return the redirect URI."""
-        return 'https://spotiplay.onrender.com' + reverse('spotify_callback')
-    
-        # Spotify Redirect URI: http://localhost:8000/spotify/callback
-        # return 'http://localhost:8000' + reverse('spotify_callback')
+        """Return the appropriate redirect URI based on the DJANGO_SETTINGS_MODULE. (dev or prod)"""
 
-        # To test on local network with other devices get the IPv4 Address using ipconfig (command prompt)
-        # Change "localhost" to IPv4 Address
-        # Change Spotify Developpers Redirect URI's settings: http://IPv4:8000/spotify/callback 
-        # Run: "python manage.py runserver IPv4:8000" OR "python manage.py runserver 0.0.0.0:8000"
-        # Go to IPv4:8000 in browser (for some reason 0.0.0.0:8000 in browser won't work...)
-        # Remove comment below
-        # return 'http://IPv4:8000' + reverse('spotify_callback')
+        # Get the DJANGO_SETTINGS_MODULE value
+        django_settings_module = config('DJANGO_SETTINGS_MODULE', default='spotiplay.settings.dev')
+        
+        # Determine the base URL based on the settings module
+        if django_settings_module == 'spotiplay.settings.prod':
+            base_url = config('PROD_BASE_URL', default='https://spotiplay.onrender.com')
+        else:
+            base_url = config('DEV_BASE_URL', default='http://localhost:8000')
+        
+        return base_url + reverse('spotify_callback')
 
     @staticmethod
     def generate_state():
