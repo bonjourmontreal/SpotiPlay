@@ -1,4 +1,5 @@
-from django.urls import path
+from django.urls import path, include
+from django.conf import settings
 from . import views
 
 urlpatterns = [
@@ -16,3 +17,9 @@ urlpatterns = [
     path('quiz/leaderboard', views.get_leaderboard, name='get_leaderboard'),
     path('quiz/total-leaderboard', views.get_total_leaderboard, name='get_total_leaderboard'),
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ]

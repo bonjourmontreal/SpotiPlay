@@ -6,6 +6,8 @@ from decouple import config
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent 
+# print("BASE_DIR: ", BASE_DIR)
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',

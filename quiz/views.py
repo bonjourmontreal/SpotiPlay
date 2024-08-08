@@ -109,8 +109,8 @@ def spotify_callback(request):
             display_name = user_profile.get('display_name', '')
 
             # Log the user profile details
-            print(f"Spotify User ID: {spotify_user_id}")
-            print(f"Display Name: {display_name}")
+            # print(f"Spotify User ID: {spotify_user_id}")
+            # print(f"Display Name: {display_name}")
 
             # Create or get the user based on Spotify data
             user, created = User.objects.get_or_create(username=spotify_user_id)
@@ -120,8 +120,8 @@ def spotify_callback(request):
                 user.save()
             
             # Log user creation status
-            print(f"User created: {created}")
-            print(f"User ID: {user.id}")
+            # print(f"User created: {created}")
+            # print(f"User ID: {user.id}")
             
             request.session['user_id'] = user.id  # Save the user ID in the session
             request.session['spotify_user_id'] = spotify_user_id  # Save the Spotify user ID in the session

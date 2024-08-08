@@ -23,7 +23,7 @@ if use_sqlite:
             'NAME': os.path.join(settings.BASE_DIR, 'db.sqlite3'),
         }
     }
-    print("Using SQLite database")
+    # print("Using SQLite database")
 else:
     DATABASES = {
         'default': {
@@ -35,16 +35,31 @@ else:
             'PORT': config('LOCAL_DB_PORT'),
         }
     }
-    print("Using PostgreSQL database")
+    # print("Using PostgreSQL database")
 
 # Development secret key (use environment variable for production).
 SECRET_KEY = config('DEV_SECRET_KEY')
 
-SESSION_COOKIE_SECURE = False
 # Disable HTTPS requirement for cookies in development.
+SESSION_COOKIE_SECURE = False
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Print emails to console for testing.
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
+# Toggle the debug toolbar
+ENABLE_DEBUG_TOOLBAR = False  # Change this to False to disable the toolbar
+
+if ENABLE_DEBUG_TOOLBAR:
+    INSTALLED_APPS.append('debug_toolbar')
+    MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')
+
+# Debug Toolbar settings
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
+
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': lambda request: DEBUG and ENABLE_DEBUG_TOOLBAR,
+}
 

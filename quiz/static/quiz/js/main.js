@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const body = document.querySelector('body');
     const page = body.getAttribute('data-page');
-    console.log("Current page:", page);
+    // console.log("Current page:", page);
     
     if (page === 'quiz') {
         await initQuiz();

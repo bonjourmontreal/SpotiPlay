@@ -55,7 +55,7 @@ function startGlobalTimer() {
 }
 
 export function stopTimers(source = '') {
-    console.log(`Stopping all timers from: ${source}`);
+    // console.log(`Stopping all timers from: ${source}`);
     if (globalTimer) {
         clearInterval(globalTimer);
         globalTimer = null;

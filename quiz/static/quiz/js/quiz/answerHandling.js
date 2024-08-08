@@ -69,7 +69,7 @@ export function handleQuestionEnd() {
 }
 
 export function endGame() {
-    console.log('End Game initiating...');
+    // console.log('End Game initiating...');
     submitScore(score);
 }
 
@@ -91,12 +91,12 @@ export async function submitScore(score) {
 
     const data = await response.json();
     if (data.status === 'success') {
-        console.log(`Score submitted successfully: ${score}`);
+        // console.log(`Score submitted successfully: ${score}`);
         setTimeout(() => {
             window.location.href = '/results';
         }, 2000);
     } else {
-        console.error('Error submitting score:', data.error);
+        // console.error('Error submitting score:', data.error);
     }
 }
 

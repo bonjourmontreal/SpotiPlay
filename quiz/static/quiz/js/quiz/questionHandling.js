@@ -54,8 +54,8 @@ function showNextQuestion() {
     setQuestionAnswered(false);
 
     currentTrack = quizQuestions[currentQuestionIndex];
-    console.log("Showing question for track:", currentTrack['name']);
-    console.log(`Quiz type: ${quizType}`);
+    // console.log("Showing question for track:", currentTrack['name']);
+    // console.log(`Quiz type: ${quizType}`);
 
     const choicesContainer = document.querySelector('.choices-container');
     const textInputContainer = document.querySelector('.text-input-container');
@@ -245,11 +245,11 @@ export function playSong() {
 
     // If the question is already answered, play the song for the full duration
     if (getQuestionAnswered()) {
-        console.log("Question already answered. Playing song for full duration.");
+        // console.log("Question already answered. Playing song for full duration.");
         playSongForDuration(LONG_PLAY_DURATION);
     } else {
         // If the question is not answered, play the song for a short duration and start the timers
-        console.log("Playing song for short duration and starting timers.");
+        // console.log("Playing song for short duration and starting timers.");
         playSongForDuration(SHORT_PLAY_DURATION);
         startTimers();
         enableChoices(); // Enable choices after song starts playing
