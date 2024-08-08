@@ -170,7 +170,7 @@ Key variables for the `.env` file are listed below. Essential settings include S
 
 These are necessary for connecting to the Spotify API. Replace the placeholders with your actual Spotify credentials found in your Spotify App.
 
-```plaintext
+```ini
 SOCIAL_AUTH_SPOTIFY_KEY=<your_spotify_key>
 SOCIAL_AUTH_SPOTIFY_SECRET=<your_spotify_secret>
 ```
@@ -179,7 +179,7 @@ SOCIAL_AUTH_SPOTIFY_SECRET=<your_spotify_secret>
 
 Use these settings for local development. The provided default Django Secret Key should be replaced with a new one for enhanced security. Refer to the [Generate Security Key](#generate-security-key) section for instructions on creating a new key.
 
-```plaintext
+```ini
 DEV_BASE_URL=http://localhost:8000
 DEV_SECRET_KEY='<your_development_secret_key>' 
 USE_SQLITE=True # Set to True to use SQLite, or False to use PostgreSQL
@@ -188,7 +188,7 @@ USE_SQLITE=True # Set to True to use SQLite, or False to use PostgreSQL
 #### Database Configuration
 SQLite is the default database configuration. If PostgreSQL is preferred, set `USE_SQLITE=False` and configure the PostgreSQL development environment variables as follows:
 
-```plaintext
+```ini
 LOCAL_DB_NAME=<your_local_db_name>
 LOCAL_DB_USER=<your_local_db_user>
 LOCAL_DB_PASSWORD=<your_local_db_password>
@@ -199,7 +199,7 @@ LOCAL_DB_PORT=<your_local_db_port>
 ### Production Environment Variables
 These settings are used when deploying your application on a production server, like Render. These values should be set on the hosting platform.
 
-```plaintext
+```ini
 DJANGO_SETTINGS_MODULE=spotiplay.settings.prod
 
 PROD_BASE_URL=<your_production_base_url>
