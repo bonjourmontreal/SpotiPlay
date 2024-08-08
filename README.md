@@ -31,19 +31,19 @@ SpotiPlay utilizes the Spotify API to authenticate users and fetch personalized 
 
 ### Authorization Code Flow
 
-1- **User Authorization**: 
+1. **User Authorization**: 
    - The app requests authorization from the user by redirecting them to Spotify's authorization endpoint with necessary parameters such as `client_id`, `response_type`, `redirect_uri`, and optional scopes.
    - The user logs in to their Spotify account and grants permission to the app to access their data.
 
-2- **Authorization Response**:
+2. **Authorization Response**:
    - After the user grants permission, they are redirected back to the app with an authorization code.
    - If the authorization is successful, the response includes a `code` parameter; otherwise, it includes an `error`.
 
-3- **Exchange Code for Access Token**:
+3. **Exchange Code for Access Token**:
    - The app exchanges the authorization code for an access token by sending a POST request to Spotify's token endpoint.
    - The request includes the `grant_type`, `code`, `redirect_uri`, and appropriate headers for authentication.
 
-4- **Access Token Response**:
+4. **Access Token Response**:
    - On success, Spotify returns an access token, which is then used to make API requests to fetch user data.
 
 ### Integration with SpotiPlay
