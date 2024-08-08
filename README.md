@@ -112,19 +112,19 @@ In summary, SpotiPlay goes beyond the course's typical boundaries by integrating
 
 Clone the project
 
-```bash
+```powershell
   git clone https://github.com/bonjourmontreal/spotiplay
 ```
 
 Go to the project directory
 
-```bash
+```powershell
   cd spotiplay
 ```
 
 Install dependencies
 
-```bash
+```powershell
   pip install -r requirements.txt
 ```
 
@@ -136,7 +136,7 @@ Install dependencies
 
 Run the development server
 
-```bash
+```powershell
   python manage.py runserver
 ```
 
@@ -221,7 +221,7 @@ DATABASE_URL=postgresql://<your_render_db_user>:<your_render_db_password>@<your_
 
 You can generate a secure Django secret key using Python:
 
-```
+```python
 import secrets
 
 # Generate a 50-character secret key
