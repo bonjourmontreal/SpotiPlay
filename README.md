@@ -1,3 +1,4 @@
+![Spotiplay WebPage Layout](quiz/static/quiz/images/Spotiplay%20WebPage%20Layout.png)
 
 # SpotiPlay
 
