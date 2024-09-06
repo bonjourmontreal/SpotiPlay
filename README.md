@@ -245,5 +245,5 @@ This application is developed for educational purposes as part of the CS50 Web P
 
 ## Demo
 
-
+[![Watch the video](https://img.youtube.com/vi/PgaatV_6GjY/0.jpg)](https://youtu.be/PgaatV_6GjY)
 
