@@ -6,6 +6,15 @@
 
 SpotiPlay is a dynamic web-based quiz game that utilizes the Spotify API to generate personalized quizzes based on each user’s listening history and preferences. This project delivers a unique and engaging way to challenge users' knowledge of their favorite songs and artists, deepening their connection with their own musical journey.
 
+### Live Demo
+Check out the live version of SpotiPlay here: [SpotiPlay on Render](https://spotiplay.onrender.com/)
+
+**Important:**  
+
+SpotiPlay is currently in Development Mode, which limits the number of users to 25. This means only registered users can log in and access personalized quizzes based on their own Spotify music data. If you'd like to log in with your Spotify account and quiz yourself on your music, please [contact us](mailto:support@spotiplay.com) with your Spotify account’s name and email to be added to the user list.
+
+Users who are not registered can still enjoy the quiz using songs from Spotify's "Top 50 - Global" playlist.
+
 ## Features
 
 - **User Authentication with Spotify:** Utilizes Spotify's API to facilitate secure and personalized login, tailoring the quiz experience directly to each user's music profile.
