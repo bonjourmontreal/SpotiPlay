@@ -19,7 +19,7 @@
                     <img src="{% static 'quiz/images/SpotiPlay_Logo.png' %}" alt="SpotiPlay Logo" id="spotiplay-logo">
                 </a>
             </div>
-            {% if request.session.access_token %}
+            {% if request.session.display_name %}
             <div class="header-right">
                 <a href="{% url 'welcome' %}" class="home-button">
                     <i class="fas fa-home"></i>

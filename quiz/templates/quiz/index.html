@@ -9,9 +9,29 @@
         <h1>Welcome to <span class="highlight">SpotiPlay</span></h1>
         <p class="subtitle">Test your knowledge of your favorite songs with our Spotify quiz!</p>
     </div>
-    <div>
+
+    <!-- Informational message with improved UI -->
+    <div class="info-message info-message-index">
+        <p class="info-heading"><strong>Important:</strong></p> <!-- Adjusted the heading size -->
+        <p>
+            Our app is in Development Mode, so we’re limited to 25 registered users. To log in with Spotify and quiz yourself on your favorite music, you'll need to be pre-registered. 
+            <a href="mailto:support@spotiplay.com" class="contact-link">Contact us</a> with your Spotify account’s name and email, and we'll add you.
+        </p>
+        <p>
+            We’re staying in Development Mode to keep the quiz available since extended mode restricts quiz games using Spotify data.
+        </p>
+        <p>
+            Without logging in, you'll be quizzed on songs from Spotify's "Top 50 - Global" playlist. Log in to test your own favorite tracks!
+        </p>
+    </div>
+
+    <!-- Buttons to log in with Spotify or play without an account -->
+    <div class="button-section" style="display: flex; justify-content: center; gap: 20px;">
         <button class="btn-primary">
             <a href="{% url 'spotify_auth' %}">Login with Spotify</a>
+        </button>
+        <button class="btn-primary">
+            <a href="{% url 'welcome' %}">Login as Guest</a>
         </button>
     </div>
 {% endblock %}

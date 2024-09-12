@@ -17,6 +17,7 @@ logger = logging.getLogger(__name__)
 class SpotifyAuth:
     AUTH_URL = "https://accounts.spotify.com/authorize"
     TOKEN_URL = "https://accounts.spotify.com/api/token"
+    CLIENT_CREDENTIALS_URL = "https://accounts.spotify.com/api/token"
     
     @staticmethod
     def get_redirect_uri():
@@ -69,6 +70,23 @@ class SpotifyAuth:
             return response.json()
         else:
             logger.error(f"Failed to exchange code: {response.text}")
+            return None
+        
+    @staticmethod
+    def get_app_access_token():
+        """Get Spotify API access token using Client Credentials Flow (no user authentication)."""
+        auth_response = requests.post(
+            SpotifyAuth.CLIENT_CREDENTIALS_URL,
+            {
+                'grant_type': 'client_credentials',
+                'client_id': settings.SOCIAL_AUTH_SPOTIFY_KEY,
+                'client_secret': settings.SOCIAL_AUTH_SPOTIFY_SECRET,
+            }
+        )
+        if auth_response.status_code == 200:
+            return auth_response.json()['access_token']
+        else:
+            logger.error(f"Failed to get app access token: {auth_response.text}")
             return None
 
 def spotify_auth(request):
@@ -163,6 +181,29 @@ class SpotifyAPI:
             for track in top_tracks
         ]
         return simplified_tracks
+    
+    @staticmethod
+    def fetch_playlist_tracks(access_token, playlist_id, limit=50):
+        """Fetch tracks from a specified playlist."""
+        headers = {'Authorization': f'Bearer {access_token}'}
+        url = f'{SpotifyAPI.BASE_URL}/playlists/{playlist_id}/tracks?limit={limit}'
+        response = requests.get(url, headers=headers)
+
+        if response.status_code != 200:
+            logger.error(f"Failed to fetch playlist tracks: {response.status_code}")
+            return {'error': 'Failed to fetch playlist tracks', 'status_code': response.status_code}
+
+        playlist_tracks = response.json().get('items', [])
+        simplified_tracks = [
+            {
+                'name': track['track']['name'],
+                'artist': ', '.join(artist['name'] for artist in track['track']['artists']),
+                'preview_url': track['track']['preview_url']
+            }
+            for track in playlist_tracks if track['track']['preview_url'] is not None  # Ensure we only include tracks with preview URLs
+        ]
+
+        return simplified_tracks
 
 def logout(request):
     """Log the user out by clearing Spotify authentication data."""
@@ -182,13 +223,16 @@ def index(request):
 
 def profile(request):
     """Render the profile page."""
+    # Check if the user is authenticated via Spotify or using the 'Guest' profile
     if 'access_token' not in request.session:
-        return redirect('index')
-
-    # Get user information from session
-    user_id = request.session.get('user_id')
-    display_name = request.session.get('display_name')
-    spotify_user_id = request.session.get('spotify_user_id')
+        # Non-authenticated user; use 'Guest' profile data
+        user = User.objects.get(username='Guest')
+        display_name = user.first_name
+        user_id = user.id
+    else:
+        # Authenticated user
+        user_id = request.session.get('user_id')
+        display_name = request.session.get('display_name')
 
     if not user_id:
         print("User ID not found in session")
@@ -207,87 +251,82 @@ def profile(request):
 
     context = {
         'display_name': display_name,
-        'spotify_user_id': spotify_user_id,
+        'spotify_user_id': request.session.get('spotify_user_id', None),
         'highest_score': highest_score.score if highest_score else 0,
         'total_score': total_score,
         'times_played': times_played,
     }
-
-    # Log context data for debugging
-    # print(f"Profile context: {context}")
 
     return render(request, 'quiz/profile.html', context)
 
 def welcome(request):
     """Render the welcome page."""
     if 'access_token' not in request.session:
-        return redirect('index')
+        # Non-authenticated user, use or create the 'Guest' user
+        user, created = User.objects.get_or_create(username='Guest', defaults={'first_name': 'Guest'})
+        request.session['user_id'] = user.id
+        request.session['display_name'] = user.first_name
+
     display_name = request.session.get('display_name')
     return render(request, 'quiz/welcome.html', {'display_name': display_name})
 
 def leaderboard(request):
     """Render the leaderboard page."""
-    if 'access_token' not in request.session:
-        return redirect('index')
+    # Both authenticated and 'Guest' users should have access
     return render(request, 'quiz/leaderboard.html')
 
 def quiz(request):
     """Render the quiz page."""
-    if 'access_token' not in request.session:
-        return redirect('index')
+    # No need to create the 'Guest' user here anymore
     return render(request, 'quiz/quiz.html')
 
 def results(request):
     """Render the results page."""
-    if 'access_token' not in request.session:
-        return redirect('index')
+    # Ensure that both authenticated and 'Guest' users can access the results
     score = request.session.get('score', 0)
     return render(request, 'quiz/results.html', {'score': score})
 
 def quiz_data(request):
-    """Handle quiz data request: fetch user's top tracks from Spotify API."""
-    access_token = request.session.get('access_token')
+    """Handle quiz data request: fetch user's top tracks from Spotify API or a hardcoded playlist."""
     time_range = request.GET.get('time_range', 'medium_term')  # Default to medium_term
-    if not access_token:
-        return JsonResponse({'error': 'Access token is missing'}, status=400)
+    
+    # If user is logged in and has an access token, use their data
+    access_token = request.session.get('access_token')
+    if access_token:
+        top_tracks = SpotifyAPI.fetch_user_top_tracks(access_token, time_range=time_range)
+        if 'error' in top_tracks:
+            return JsonResponse(top_tracks, status=top_tracks.get('status_code', 500))
+        return JsonResponse({'top_tracks': top_tracks})
 
-    # Fetch user's top tracks from Spotify API
-    top_tracks = SpotifyAPI.fetch_user_top_tracks(access_token, time_range=time_range)
+    # If user is not logged in, fetch playlist using app credentials
+    app_access_token = SpotifyAuth.get_app_access_token()
+    if app_access_token:
+        top_50_playlist_id = '37i9dQZEVXbMDoHDwVN2tF'
+        predefined_tracks = SpotifyAPI.fetch_playlist_tracks(app_access_token, top_50_playlist_id)
+        return JsonResponse({'top_tracks': predefined_tracks})
     
-    if 'error' in top_tracks:
-        return JsonResponse(top_tracks, status=top_tracks.get('status_code', 500))
-    
-    return JsonResponse({'top_tracks': top_tracks})
+    return JsonResponse({'error': 'Unable to fetch playlist'}, status=500)
 
 def submit_score(request):
     """Handle POST request to submit a user's score."""
     if request.method == 'POST':
         try:
-            # Check if access token is present in session
-            if 'access_token' not in request.session:
-                logger.error("Access token not found in session during score submission")
-                return JsonResponse({'error': 'User not authenticated'}, status=401)
-
             # Retrieve score from request body
             score = json.loads(request.body).get('score')
             if score is None:
                 logger.error("Score not found in request body")
                 return JsonResponse({'error': 'Score not provided'}, status=400)
 
-            # Check if user ID is present in session
+            # Check if user is authenticated or non-authenticated
             user_id = request.session.get('user_id')
             if not user_id:
-                logger.error("User ID not found in session")
-                return JsonResponse({'error': 'User not authenticated'}, status=401)
-            
-            # Retrieve user from database
-            try:
+                # Non-authenticated user; use or create 'Guest' user
+                user, created = User.objects.get_or_create(username='Guest', defaults={'first_name': 'Guest'})
+            else:
+                # Authenticated user
                 user = User.objects.get(id=user_id)
-            except User.DoesNotExist:
-                logger.error("User not found in database")
-                return JsonResponse({'error': 'User not found'}, status=401)
-            
-            # Create leaderboard entry
+
+            # Create leaderboard entry for the user
             Leaderboard.objects.create(user=user, score=score)
             request.session['score'] = score
             logger.info(f"Score submitted successfully for user {user.username}")
@@ -299,6 +338,7 @@ def submit_score(request):
     # Handle invalid request method
     logger.error("Invalid request method")
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
 
 def get_leaderboard(request):
     """Retrieve the top 20 scores from the leaderboard."""

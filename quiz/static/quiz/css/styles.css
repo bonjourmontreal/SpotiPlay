@@ -323,6 +323,37 @@ p {
     width: 100%;
 }
 
+/* Index page*/
+.info-message-index {
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 2px solid #ccc;
+    background-color: #f2f2f2; /* Slightly darker grey */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    max-width: 600px;
+    margin: 0 auto 20;
+}
+
+.info-message-index p {
+    font-size: 1em;
+    color: #555;
+}
+
+.info-message-index .info-heading {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+}
+
+.info-message-index .contact-link {
+    color: #0073e6;
+    text-decoration: none;
+    font-size: 1em;
+    border-bottom: 1px solid #0073e6;
+}
+
 /* Profile Page Styles */
 .spotify-id {
     font-style: italic;
