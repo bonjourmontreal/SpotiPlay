@@ -25,8 +25,8 @@ Thumbs.db
 dependency-tree.txt
 
 # Ignore Django migrations
-*/migrations/*.py
-!*/migrations/__init__.py
+# */migrations/*.py
+# !*/migrations/__init__.py
 
 # Ignore specific settings module or local settings
 # local_settings.py
